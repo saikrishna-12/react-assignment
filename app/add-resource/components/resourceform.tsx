@@ -12,10 +12,15 @@ import {
     FormLabel,
     FormMessage,
   } from "@/components/ui/form"
+  import { toast } from "sonner"
 import { zodResolver } from '@hookform/resolvers/zod';
 import Image from 'next/image';
 import { Input } from '@/components/ui/input';
 import { Button } from "@/components/ui/button";
+import axios from 'axios';
+import { useToast } from "@/components/ui/use-toast"
+import { ToastAction } from '@/components/ui/toast';
+import { Toaster } from "@/components/ui/toaster"
 
 const resourceSchema = z.object({
   name: z.string().min(1, {message:'Name is required'}),
@@ -39,13 +44,34 @@ export default function Resourceform() {
         
     },
   })
-
+  const { toast } = useToast()
   const [imagePreview, setImagePreview] = useState<string | null>(null);
 
-  function onSubmit(values: z.infer<typeof resourceSchema>) {
+  const onSubmit = async (values: z.infer<typeof resourceSchema>) => {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    alert("submited")
+    try{
+    const response = await axios.post('https://media-content.ccbp.in/website/react-assignment/add_resource.json', values, {
+                headers: {
+                    'Content-Type': 'multipart/form-data'
+                }
+            });}
+            catch(error: any){
+                console.error("error=>", error);
+                if (axios.isAxiosError(error)) {
+                
+                    console.log(error.code)
+                    
+                    toast({title: "Failed",
+                    description: `${error.code}`,
+                      })
+                }
+                
+            }
+            finally{
+                
+                form.reset();
+            }
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -64,6 +90,7 @@ export default function Resourceform() {
   return (
     <div className="container max-w-[320px] flex flex-col">
       <h2 className="text-center font-rubik text-[32px] text-[#171F46]">Add a Resource</h2>
+      <Toaster />
       <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
@@ -74,7 +101,7 @@ export default function Resourceform() {
                  <FormLabel className="block text-[12px] font-semibold font-sans text-[#7E858E]">NAME</FormLabel>
                 <FormControl className="m-0 px-2 h-auto">
                     <Input className="border outline-none"
-                        placeholder="Name"
+                        
                         {...field}
                     />
                 </FormControl>
