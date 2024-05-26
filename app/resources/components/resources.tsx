@@ -69,7 +69,7 @@ export default function ResourcesBody(){
           {(error) && (<div>Error: {error}</div>)}
           {(resources.length !== 0) && (
            resources.map((x,index)=>(
-            <div className="my-4">
+            <div className="my-4" key={x.id}>
             <Card {...x}/>
             </div>
            ))

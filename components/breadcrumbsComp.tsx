@@ -28,14 +28,14 @@ import { useState,useEffect, useMemo } from "react";
         <Breadcrumb className="flex">
   
   {crumbs.map((x, index)=>(
-    <BreadcrumbList >
+    <BreadcrumbList key={x}>
     {(index === 0)? (
-      <BreadcrumbItem>
+      <BreadcrumbItem >
       <BreadcrumbLink href="/">Home</BreadcrumbLink>
     </BreadcrumbItem>
     ):(
       <><BreadcrumbSeparator />
-      <BreadcrumbItem>
+      <BreadcrumbItem >
       
       <BreadcrumbLink href={`/${crumbs.slice(1, index + 1).join('/')}`}>{capitalizeFirstChar(x)}</BreadcrumbLink>
     </BreadcrumbItem></>

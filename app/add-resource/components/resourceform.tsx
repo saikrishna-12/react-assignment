@@ -66,12 +66,12 @@ export default function Resourceform() {
                     description: `${error.code}`,
                       })
                 }
-                
+               
             }
             finally{
-                
-                form.reset();
+              form.reset();
             }
+            
   }
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
